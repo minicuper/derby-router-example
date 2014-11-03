@@ -1,0 +1,17 @@
+import:(src="./home")
+import:(src="./second")
+import:(src="./item")
+
+Title:
+  | {{_page.title}}
+
+Body:
+  view(name="header")
+  view(name="{{$render.ns}}")
+  view(name="footer", year="2014")
+
+header:
+  h1 Header
+
+footer:
+  p Footer {{@year}}
