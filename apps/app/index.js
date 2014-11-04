@@ -12,17 +12,15 @@ app.serverUse(module, 'derby-stylus');
 app.loadViews(__dirname + '/views');
 app.loadStyles(__dirname + '/styles');
 
-app.route('/', ['items']);
-app.route('item', '/item/:item', ['item']);
-
-app.route('second', ['second_1']);
-
+app.get('/', ['items']);
+app.get('item', '/item/:item', ['item']);
+app.get('second', ['second_1']);
 
 
 app.module('item', {
   load: function(){
     this.item = this.model.at('items.'+this.params.item);
-    this._subscriptions.push(this.item);
+    this.subscriptions.push(this.item);
   },
   setup: function(){
     this.model.ref('_page.item', this.item);
@@ -33,7 +31,7 @@ app.module('item', {
 app.module('items', {
   load: function(){
     this.items = this.model.query('items', {});
-    this._subscriptions.push(this.items);
+    this.subscriptions.push(this.items);
   },
   setup: function(){
     this.model.ref('_page.items', this.items);
@@ -43,7 +41,7 @@ app.module('items', {
 app.module('first_1', {
   load: function(){
     this.items2 = this.model.at('items2');
-    this._subscriptions.push(this.items2);
+    this.subscriptions.push(this.items2);
   },
   setup: function(){
     this.model.ref('_page.items2', this.items2);
