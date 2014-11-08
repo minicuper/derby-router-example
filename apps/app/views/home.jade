@@ -2,4 +2,4 @@ index:
   ul
     each #root._page.items as #item
       li
-        a(href="/item/{{#item.id}}") {{#item.name}}
+        a(href="{{pathFor('item', 'second', #item.id)}}") {{#item.name}}

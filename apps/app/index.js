@@ -4,6 +4,12 @@ var app = module.exports = derby.createApp('app', __filename);
 
 if (!derby.util.isProduction) global.app = app;
 
+//var ser = derby.util.isServer ? derby.util.serverRequire(module, './server'): {};
+
+var ser = derby.util.serverRequire(module, './server') || {};
+
+console.log('ser', ser);
+
 app.use(require('derby-router'));
 
 app.serverUse(module,'derby-jade');
@@ -13,9 +19,8 @@ app.loadViews(__dirname + '/views');
 app.loadStyles(__dirname + '/styles');
 
 app.get('/', ['items']);
-app.get('item', '/item/:item', ['item']);
-app.get('second', ['second_1']);
-
+app.get('item', '/item/:name+/:id', ['item']);
+//app.get('second', ['second_1']);
 
 app.module('item', {
   load: function(){
@@ -26,7 +31,6 @@ app.module('item', {
     this.model.ref('_page.item', this.item);
   }
 });
-
 
 app.module('items', {
   load: function(){
