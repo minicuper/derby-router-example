@@ -24,7 +24,12 @@ module.exports = function (store, apps, error, publicDir, cb){
   var handlers = highway(store, {session: session});
 
   var expressApp = express()
+
     .use(favicon(publicDir + '/img/favicon.ico'))
+      .use(function(req, res, next){
+        console.log(req.path);
+        next();
+      })
     .use(compression())
     .use(serveStatic(publicDir))
     .use(store.modelMiddleware())

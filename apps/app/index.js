@@ -4,13 +4,11 @@ var app = module.exports = derby.createApp('app', __filename);
 
 if (!derby.util.isProduction) global.app = app;
 
-//var ser = derby.util.isServer ? derby.util.serverRequire(module, './server'): {};
+var serverRoutes = derby.util.serverRequire(module, './server') || {};
 
-var ser = derby.util.serverRequire(module, './server') || {};
-
-console.log('ser', ser);
-
-app.use(require('derby-router'));
+app.use(require('derby-router'), {
+  baseUrl: 'http://localhost:3000'
+});
 
 app.serverUse(module,'derby-jade');
 app.serverUse(module, 'derby-stylus');
@@ -21,6 +19,9 @@ app.loadStyles(__dirname + '/styles');
 app.get('/', ['items']);
 app.get('item', '/item/:name+/:id', ['item']);
 //app.get('second', ['second_1']);
+
+app.serverGet('main', '/main', serverRoutes.main);
+app.serverPost('mainPost', '/main', serverRoutes.mainPost);
 
 app.module('item', {
   load: function(){
@@ -60,5 +61,5 @@ app.module('second_1', {
   }
 });
 
-console.log('routes', Object.keys(app._router.routes));
+//console.log('routes', Object.keys(app._router.routes));
 

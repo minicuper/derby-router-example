@@ -3,3 +3,6 @@ index:
     each #root._page.items as #item
       li
         a(href="{{pathFor('item', 'second', #item.id)}}") {{#item.name}}
+
+  br/
+  a(href="{{pathFor('main')}}") Server Route
