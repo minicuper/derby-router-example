@@ -2,10 +2,9 @@ var express = require('express');
 
 var router = express.Router();
 
-router.post('/api/v1/item', function(req, res){
-  var model = req.getModel();
-  //...
-  res.json(true);
+
+router.get('/server2', function(req, res, next){
+  next('error 2222');
 });
 
 module.exports = router;

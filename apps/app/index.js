@@ -20,40 +20,40 @@ app.get('/', ['items']);
 app.get('item', '/item/:name+/:id', ['item']);
 //app.get('second', ['second_1']);
 
-app.serverGet('main', '/main', serverRoutes.main);
+app.serverGet('main', '/main', serverRoutes.main, serverRoutes.mainPost);
 app.serverPost('mainPost', '/main', serverRoutes.mainPost);
 
-app.module('item', {
+app.useRouterModule('item', {
   load: function(){
     this.item = this.model.at('items.'+this.params.item);
-    this.subscriptions.push(this.item);
+    this.addSubscription(this.item);
   },
   setup: function(){
     this.model.ref('_page.item', this.item);
   }
 });
 
-app.module('items', {
+app.useRouterModule('items', {
   load: function(){
     this.items = this.model.query('items', {});
-    this.subscriptions.push(this.items);
+    this.addSubscription(this.items);
   },
   setup: function(){
     this.model.ref('_page.items', this.items);
   }
 });
 
-app.module('first_1', {
+app.useRouterModule('first_1', {
   load: function(){
     this.items2 = this.model.at('items2');
-    this.subscriptions.push(this.items2);
+    this.addSubscription(this.items2);
   },
   setup: function(){
     this.model.ref('_page.items2', this.items2);
   }
 });
 
-app.module('second_1', {
+app.useRouterModule('second_1', {
   load: function(items, first_1){
     console.log('second', arguments);
   },
