@@ -18,12 +18,13 @@ app.loadStyles(__dirname + '/styles');
 
 app.get('/', ['items']);
 app.get('item', '/item/:name+/:id', ['item']);
+app.get('second', ['second_1'])
 //app.get('second', ['second_1']);
 
 app.serverGet('main', '/main', serverRoutes.main, serverRoutes.mainPost);
 app.serverPost('mainPost', '/main', serverRoutes.mainPost);
 
-app.useRouterModule('item', {
+app.module('item', {
   load: function(){
     this.item = this.model.at('items.'+this.params.item);
     this.addSubscription(this.item);
@@ -33,8 +34,9 @@ app.useRouterModule('item', {
   }
 });
 
-app.useRouterModule('items', {
+app.module('items', {
   load: function(){
+    this.moduleName = "items";
     this.items = this.model.query('items', {});
     this.addSubscription(this.items);
   },
@@ -43,8 +45,9 @@ app.useRouterModule('items', {
   }
 });
 
-app.useRouterModule('first_1', {
+app.module('first_1', {
   load: function(){
+    this.moduleName = "first_1";
     this.items2 = this.model.at('items2');
     this.addSubscription(this.items2);
   },
@@ -53,10 +56,10 @@ app.useRouterModule('first_1', {
   }
 });
 
-app.useRouterModule('second_1', {
-  load: function(items, first_1){
+app.module('second_1', {
+  load: ['items','first_1', function(items, first_1){
     console.log('second', arguments);
-  },
+  }],
   setup: function(){
   }
 });
