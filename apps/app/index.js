@@ -18,8 +18,12 @@ app.loadStyles(__dirname + '/styles');
 
 app.get('/', ['items']);
 app.get('item', '/item/:name+/:id', ['item']);
-app.get('second', ['second_1'])
-//app.get('second', ['second_1']);
+app.get('second', function(){
+  console.log('redirect');
+  this.redirect('home');
+});
+
+app.route('api', 'http://gmail.com/:item?');
 
 app.serverGet('main', '/main', serverRoutes.main, serverRoutes.mainPost);
 app.serverPost('mainPost', '/main', serverRoutes.mainPost);
@@ -27,7 +31,7 @@ app.serverPost('mainPost', '/main', serverRoutes.mainPost);
 app.module('item', {
   load: function(){
     this.item = this.model.at('items.'+this.params.item);
-    this.addSubscription(this.item);
+    this.addFetches(this.item, 'items');
   },
   setup: function(){
     this.model.ref('_page.item', this.item);
@@ -36,9 +40,8 @@ app.module('item', {
 
 app.module('items', {
   load: function(){
-    this.moduleName = "items";
     this.items = this.model.query('items', {});
-    this.addSubscription(this.items);
+    this.addFetches(this.items);
   },
   setup: function(){
     this.model.ref('_page.items', this.items);
@@ -49,7 +52,7 @@ app.module('first_1', {
   load: function(){
     this.moduleName = "first_1";
     this.items2 = this.model.at('items2');
-    this.addSubscription(this.items2);
+    this.addSubscriptions(this.items2);
   },
   setup: function(){
     this.model.ref('_page.items2', this.items2);
@@ -64,5 +67,5 @@ app.module('second_1', {
   }
 });
 
-//console.log('routes', Object.keys(app._router.routes));
+console.log('routes', Object.keys(app.Router.routes));
 
